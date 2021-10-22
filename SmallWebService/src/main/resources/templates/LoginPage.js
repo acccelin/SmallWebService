@@ -12,7 +12,7 @@ global.constants = {
 
 class LoginPage extends Component {
 	url = global.constants.url
-	state = { username: '', password: '' };
+	state = { username: '', password: '', state: '' };
 
 	handleChange = event => {
 		console.log(event.target.name)
@@ -29,11 +29,13 @@ class LoginPage extends Component {
 
 
 		var data = "No response"
-		axios.post(this.url + "/cal", userAccount
+		axios.post(this.url + "/user", userAccount
 		).then(
 			res => {
 				data = res.data
-				this.setState({ total: data })
+				if (data == -1) { this.setState({ state: "Username not exist" }) }
+				else if (data == 0) { window.open(ItemPage.js) }
+				else { this.setState({ state: "Password not match" }) }
 			}
 		)
 
@@ -45,10 +47,11 @@ class LoginPage extends Component {
 				<h3>Login</h3>
 				<bs.Form onSubmit={this.handleSubmit} >
 					<bs.Form.Label>userName: </bs.Form.Label>
-					<bs.Form.Control type="text" name={"username"} onChange={this.handleChange}/>
+					<bs.Form.Control type="text" name={"username"} onChange={this.handleChange} />
 					<bs.Form.Label>password: </bs.Form.Label>
-					<bs.Form.Control type="password" name={"password"} onChange={this.handleChange}/>
+					<bs.Form.Control type="password" name={"password"} onChange={this.handleChange} />
 					<bs.Button type="submit">Login</bs.Button>
+					<bs.Form.Label>password: </bs.Form.Label>
 				</bs.Form>
 			</div>
 		);
